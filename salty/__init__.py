@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask.templating import render_template
 
 
 def create_app(test_config=None):
@@ -38,7 +39,7 @@ def create_app(test_config=None):
 
     @app.route('/', methods=['GET'])
     def welcome():
-        return 'WELCOME'
+        return render_template('index.html')
 
     from . import db
     db.init_app(app)
