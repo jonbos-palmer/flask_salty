@@ -3,14 +3,13 @@
 
 {% block content %}
     <div class="hero">
-    <h1>Hello</h1>
+    <h1 class="title">Hello</h1>
     
     {% if g[user] %}
+                <p class="subtitle"> Nice to see you, {{g['user']}}! <a href="#">Logout</a>
         {% else %}
-            <p> Please <a href="#">Register</a> or <a href="#">Login</a>
-
+            <p class="subtitle"> Please <a href="#">Register</a> or <a href="#">Login</a>
     {% endif %}
-        
     </div>
 {% endblock content %}
     
