@@ -1,22 +1,22 @@
 import os
 
-from flask import Flask, request,redirect, url_for
+from flask import Flask, request, redirect, url_for, session, flash
 from flask.templating import render_template
 from salty.db import get_db
 
 from .password_util import hash_pass, salt_gen, verify_password
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'salty.sqlite'),
+        SECRET_KEY="dev", DATABASE=os.path.join(app.instance_path, "salty.sqlite"),
     )
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile("config.py", silent=True)
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
@@ -27,36 +27,40 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/register', methods=['GET', 'POST'])
+    @app.route("/register", methods=["GET", "POST"])
     def register():
-        if request.method == 'POST':
-            username = request.form['username']
-            password = request.form['password']
-            password2 = request.form['password_confirm']
-            db=get_db()            
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            password2 = request.form["password_confirm"]
+            db = get_db()
             error = None
             if not username:
-                error = 'Username is required.'
+                error = "Username is required."
             elif not password:
-                error = 'Password is required.'
+                error = "Password is required."
             elif not password == password2:
                 error = "Passwords don't match."
 
-            elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
-        ).fetchone() is not None:
-                error = 'User {} is already registered.'.format(username)
-            
+            elif (
+                db.execute(
+                    "SELECT id FROM user WHERE username = ?", (username,)
+                ).fetchone()
+                is not None
+            ):
+                error = "User {} is already registered.".format(username)
+
             if error is None:
                 salt = salt_gen()
-                hashed_pass = hash_pass(str.encode(password+salt))
+                hashed_pass = hash_pass(str.encode(password + salt))
                 db.execute(
-                    'INSERT INTO user (username, salt, password) VALUES (?, ?, ?)',
-                    (username, salt, hashed_pass)
+                    "INSERT INTO user (username, salt, password) VALUES (?, ?, ?)",
+                    (username, salt, hashed_pass),
                 )
                 db.commit()
-                return redirect(url_for('login'))
-        return render_template('register.html')
+                return redirect(url_for("login"))
+            flash(error)
+        return render_template("register.html")
 
     @app.route("/login", methods=["GET", "POST"])
     def login():
@@ -84,16 +88,16 @@ def create_app(test_config=None):
 
         return render_template("login.html")
 
-    @app.route('/logout')
+    @app.route("/logout")
     def logout():
         return "LOGOUT"
 
-    @app.route('/', methods=['GET'])
+    @app.route("/", methods=["GET"])
     def index():
-        return render_template('index.html')
+        return render_template("index.html")
 
     from . import db
-    db.init_app(app)
-    
-    return app
 
+    db.init_app(app)
+
+    return app
