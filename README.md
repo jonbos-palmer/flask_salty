@@ -19,7 +19,7 @@ Implement salting + password hashing with a simple login system
 
 4. Build database:
 
-        (flask_salty) $ flask init_db
+        (flask_salty) $ flask init-db
 
 5. Run app:
    
