@@ -4,9 +4,11 @@
     <h1 class="title">
         Hi, {{g['user'].username}} !
     </h1>
-    <h2 class="subtitle">
+    <div class="container">
+        <h2 class="subtitle">
         <a href="{{url_for('logout')}}" class="button">Log Out</a>
     </h2>
+</div>
     {% else %}
     <h1 class="title">
         Hi, Stranger !
