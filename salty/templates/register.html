@@ -7,12 +7,8 @@
         You're logged in as, {{g['user']}} -- <a href="#">Logout? </a>
     </p>
     {% else %}
-    <form class="form-horizontal">
+    <form class="form-horizontal" method="POST">
         <fieldset>
-
-            <!-- Form Name -->
-            <legend>Form Name</legend>
-
             <!-- Text input-->
             <div class="field">
                 <label class="label" for="username">Username</label>
