@@ -1,15 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
+<div class="has-text-centered container">
+    {% if g['user'] %}
+    <h1 class="title">
+        Hi, {{g['user'].username}} !
+    </h1>
+    <h2 class="subtitle">
+        <a href="#" class="button">Log Out</a>
+    </h2>
+    {% else %}
+    <h1 class="title">
+        Hi, Stranger !
+    </h1>
+    <div class="container">
+        <h2 class="subtitle">
+            <a href="{{ url_for('login') }}" class="button">Log In</a>
+            <a href="#" class="button">Sign Up</a>
+        </h2>
 
-
-{% block content %}
-    <div class="hero">
-    <h1 class="title">Hello</h1>
-    
-    {% if g[user] %}
-                <p class="subtitle"> Nice to see you, {{g['user']}}! <a href="#">Logout</a>
-        {% else %}
-            <p class="subtitle"> Please <a href="{{ url_for('register')}}">Register</a> or <a href="{{ url_for('login')}}">Login</a>
-    {% endif %}
     </div>
+    {% endif %}
+
+</div>
+
 {% endblock content %}
-    
