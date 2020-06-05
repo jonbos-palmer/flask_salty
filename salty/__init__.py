@@ -1,8 +1,10 @@
 import os
 
-from flask import Flask
+from flask import Flask, request,redirect, url_for
 from flask.templating import render_template
+from salty.db import get_db
 
+from .password_util import hash_pass, salt_gen, verify_password
 
 def create_app(test_config=None):
     # create and configure the app
@@ -26,7 +28,34 @@ def create_app(test_config=None):
         pass
 
     @app.route('/register', methods=['GET', 'POST'])
-    def register():            
+    def register():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            password2 = request.form['password_confirm']
+            db=get_db()            
+            error = None
+            if not username:
+                error = 'Username is required.'
+            elif not password:
+                error = 'Password is required.'
+            elif not password == password2:
+                error = "Passwords don't match."
+
+            elif db.execute(
+            'SELECT id FROM user WHERE username = ?', (username,)
+        ).fetchone() is not None:
+                error = 'User {} is already registered.'.format(username)
+            
+            if error is None:
+                salt = salt_gen()
+                hashed_pass = hash_pass(str.encode(password+salt))
+                db.execute(
+                    'INSERT INTO user (username, salt, password) VALUES (?, ?, ?)',
+                    (username, salt, hashed_pass)
+                )
+                db.commit()
+                return redirect(url_for('login'))
         return render_template('register.html')
 
     @app.route('/login', methods=['GET', 'POST'])
