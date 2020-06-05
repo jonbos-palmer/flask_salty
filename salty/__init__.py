@@ -90,7 +90,7 @@ def create_app(test_config=None):
 
     @app.route("/logout")
     def logout():
-        if session['user']:
+        if session['user_id']:
             session.clear()
             return redirect(url_for('index'))
 
