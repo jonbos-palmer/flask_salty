@@ -90,7 +90,9 @@ def create_app(test_config=None):
 
     @app.route("/logout")
     def logout():
-        return "LOGOUT"
+        if session['user']:
+            session.clear()
+            return redirect(url_for('index'))
 
     @app.route("/", methods=["GET"])
     def index():
