@@ -60,14 +60,14 @@ def create_app(test_config=None):
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
-        return "LOGIN"
+        return render_template('login.html')
 
     @app.route('/logout')
     def logout():
         return "LOGOUT"
 
     @app.route('/', methods=['GET'])
-    def welcome():
+    def index():
         return render_template('index.html')
 
     from . import db

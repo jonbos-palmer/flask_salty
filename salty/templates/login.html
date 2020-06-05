@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+        {% if g[user] %}
+    <p class="subtitle">
+        You're logged in as, {{g['user']}} -- <a href="#">Logout? </a>
+    </p>
+    {% else %}
+    <form class="form-horizontal" method="POST">
+        <fieldset>
+            <!-- Text input-->
+            <div class="field">
+                <label class="label" for="username">Username</label>
+                <div class="control">
+                    <input id="username" name="username" type="text" placeholder="Username" class="input " required="">
+
+                </div>
+            </div>
+
+            <!-- Password input-->
+            <div class="field">
+                <label class="label" for="password">Password</label>
+                <div class="control">
+                    <input id="password" name="password" type="password" placeholder="Password" class="input " required="">
+
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="field">
+                <label class="label" for="submit"></label>
+                <div class="control">
+                    <input type="submit" id="submit" value="Register" name="submit" class="button is-default">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    {% endif %}
+
+{% endblock content %}
+    
