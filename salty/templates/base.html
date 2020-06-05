@@ -9,6 +9,14 @@
 </head>
 
 <body>
+
+    {% for message in get_flashed_messages() %}
+    <div class="notification is-danger">
+        <button class="delete"></button> {{message}}
+    </div>
+
+    {% endfor %}
+
     <div class="column container has-text-centered is-3 is offset-1">
         <section class="hero is-warning" style="margin-top: 6rem">
             <div class="hero-body">
@@ -17,6 +25,17 @@
             </div>
         </section>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
