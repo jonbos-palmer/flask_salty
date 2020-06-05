@@ -8,7 +8,7 @@
     {% if g[user] %}
                 <p class="subtitle"> Nice to see you, {{g['user']}}! <a href="#">Logout</a>
         {% else %}
-            <p class="subtitle"> Please <a href="#">Register</a> or <a href="#">Login</a>
+            <p class="subtitle"> Please <a href="{{ url_for('register')}}">Register</a> or <a href="{{ url_for('login')}}">Login</a>
     {% endif %}
     </div>
 {% endblock content %}
