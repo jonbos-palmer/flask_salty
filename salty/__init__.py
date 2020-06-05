@@ -58,9 +58,31 @@ def create_app(test_config=None):
                 return redirect(url_for('login'))
         return render_template('register.html')
 
-    @app.route('/login', methods=['GET', 'POST'])
+    @app.route("/login", methods=["GET", "POST"])
     def login():
-        return render_template('login.html')
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+            error = None
+            db = get_db()
+
+            user = db.execute(
+                "SELECT * FROM user WHERE username = ?", (username,)
+            ).fetchone()
+
+            if user is None:
+                error = "That user doesn't exist"
+            elif not verify_password(password, user["salt"], user["password"]):
+                error = "Invalid password"
+            
+            if error is None:
+                session.clear()
+                session['user_id'] = user['id']
+                return redirect(url_for('index'))
+            
+            flash(error)
+
+        return render_template("login.html")
 
     @app.route('/logout')
     def logout():
