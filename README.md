@@ -1,7 +1,7 @@
 # SALTY
 
 ## Objective
-Implement salt+password hashing with a simple login system
+Implement salting + password hashing with a simple login system
 
 ## Build and Run
 
