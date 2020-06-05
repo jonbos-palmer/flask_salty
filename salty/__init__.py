@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, redirect, url_for, session, flash
+from flask import Flask, request, redirect, url_for, session, flash, g
 from flask.templating import render_template
 from salty.db import get_db
 
@@ -96,8 +96,20 @@ def create_app(test_config=None):
     def index():
         return render_template("index.html")
 
+    @app.before_request
+    def load_logged_in_user():
+        user_id = session.get('user_id')
+
+        if user_id is None:
+            g.user = None
+        else:
+            g.user = get_db().execute(
+                'SELECT * FROM user WHERE id = ?', (user_id,)
+            ).fetchone()
+
     from . import db
 
     db.init_app(app)
+
 
     return app
