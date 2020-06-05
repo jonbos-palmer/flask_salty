@@ -1,9 +1,9 @@
 # SALTY
 
-# Objective
+## Objective
 Implement salt+password hashing with a simple login system
 
-# Build and Run
+## Build and Run
 
 1. Install dependencies with package manager of your choice. For pipenv run:
 
@@ -21,5 +21,5 @@ Implement salt+password hashing with a simple login system
    
         $ flask run
 
-# NOTE
-It is not advisable to roll-your-own hashing + salting. There are several Flask-specific libraries for handling login. Check out [Flask-Login](https://github.com/maxcountryman/flask-login)
+## NOTE
+It is not advisable to roll-your-own hashing + salting. Please do not use this code for your security needs. There are several Flask-specific libraries for handling login. Check out [Flask-Login](https://github.com/maxcountryman/flask-login)
