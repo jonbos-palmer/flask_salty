@@ -9,17 +9,21 @@ Implement salting + password hashing with a simple login system
 
         $ pipenv install -r requirements.txt
 
-2. Set FLASK_APP environment variable:
+2. Activate your virtual environment. For pipenv, run:
 
-        $ export FLASK_APP=salty
+        $ pipenv shell
 
-3. Build database:
+3. Set FLASK_APP environment variable:
 
-        $ flask init_db
+        (flask_salty) $ export FLASK_APP=salty
 
-4. Run app:
+4. Build database:
+
+        (flask_salty) $ flask init_db
+
+5. Run app:
    
-        $ flask run
+        (flask_salty) $ flask run
 
 ## NOTE
 It is not advisable to roll-your-own hashing + salting. Please do not use this code for your security needs. There are several Flask-specific libraries for handling login. Check out [Flask-Login](https://github.com/maxcountryman/flask-login)
