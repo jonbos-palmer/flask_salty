@@ -78,21 +78,20 @@ def create_app(test_config=None):
                 error = "That user doesn't exist"
             elif not verify_password(password, user["salt"], user["password"]):
                 error = "Invalid password"
-            
+
             if error is None:
                 session.clear()
-                session['user_id'] = user['id']
-                return redirect(url_for('index'))
-            
+                session["user_id"] = user["id"]
+                return redirect(url_for("index"))
+
             flash(error)
 
         return render_template("login.html")
 
     @app.route("/logout")
     def logout():
-        if session['user_id']:
-            session.clear()
-            return redirect(url_for('index'))
+        session.clear()
+        return redirect(url_for("index"))
 
     @app.route("/", methods=["GET"])
     def index():
@@ -100,18 +99,19 @@ def create_app(test_config=None):
 
     @app.before_request
     def load_logged_in_user():
-        user_id = session.get('user_id')
+        user_id = session.get("user_id")
 
         if user_id is None:
             g.user = None
         else:
-            g.user = get_db().execute(
-                'SELECT * FROM user WHERE id = ?', (user_id,)
-            ).fetchone()
+            g.user = (
+                get_db()
+                .execute("SELECT * FROM user WHERE id = ?", (user_id,))
+                .fetchone()
+            )
 
     from . import db
 
     db.init_app(app)
-
 
     return app
